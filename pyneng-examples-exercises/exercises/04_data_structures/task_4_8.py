@@ -21,9 +21,8 @@
 
 ip = "192.168.3.1"
 
-newip = ip.split('.')
-table = """
-{0:<10} {1:<10} {2:<10} {3:<10}
-{0:0<10b} {1:0<10b} {2:0<10b} {3:0<10b}
+ip_table = """
+{:<8} {:<8} {:<8} {:<8}
+{:08b} {:08b} {:08b} {:08b}
 """
-print(table.format(192, 168, 3, 1))
+print(ip_table.format(ip.split('.')[0], ip.split('.')[1], ip.split('.')[2], ip.split('.')[3], int(ip.split('.')[0]), int(ip.split('.')[1]), int(ip.split('.')[2]), int(ip.split('.')[3])))

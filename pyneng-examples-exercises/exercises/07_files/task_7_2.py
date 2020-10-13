@@ -12,3 +12,11 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+from sys import argv
+
+comands = argv[1]
+
+with open(comands, 'r') as file:
+    for file_lines in file:
+        if file_lines.find('!') == -1:
+            print(file_lines.strip('\n'))
