@@ -30,7 +30,7 @@ ip = ip.split('.')
 oktet1 = int(ip[0])
 oktet2 = int(ip[1])
 oktet3 = int(ip[2])
-oktet4 = 0 * (int(ip[3]))
+oktet4 = int(ip[3])
 
 ip_result = """
 Network:
@@ -53,7 +53,7 @@ mask_result = """
 Mask:
 {4:<}
 {0:<10} {1:<10} {2:<10} {3:<10}
-{0:<10b} {1:<10b} {2:<10b} {3:<10b}
+{0:<10b} {1:<10b} {2:<10b} {3:<010b}
 """
 
 print(mask_result.format(moktet1, moktet2, moktet3, moktet4, mask))

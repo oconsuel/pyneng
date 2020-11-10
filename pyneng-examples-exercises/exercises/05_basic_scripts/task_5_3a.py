@@ -31,11 +31,11 @@ interface = input('Введите тип и номер интерфейса: ')
 mode = mode.count('trunk')
 
 modes = [
-['Введите номер VLAN: '],
-['Введите разрешенные VLANы: ']
+'Введите номер VLAN: ',
+'Введите разрешенные VLANы: '
 ]
 
-vlans = input (' '.join(modes[mode]))
+vlans = input(modes[mode])
 
 config_template = [
 ['switchport mode access',
