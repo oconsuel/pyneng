@@ -26,7 +26,7 @@
     <div class="h-100 d-flex flex-column">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="{{ url_for('index') }}">Лабораторная работа № 1</a>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Лабораторная работа № 2</a>
                 <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
                     data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
                     aria-label="Toggle navigation"></button>
@@ -35,12 +35,24 @@
                         <li class="nav-item {% if request.endpoint == 'index' %}active{% endif %}">
                             <a class="nav-link" href="{{ url_for('index') }}">Задание</a>
                         </li>
-                        <li class="nav-item {% if request.endpoint == 'posts' %}active{% endif %}">
-                            <a class="nav-link" href="{{ url_for('posts') }}">Посты</a>
+                        <li class="nav-item {% if request.endpoint == 'args' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('args', arg1='val1',arg2='val2') }}">Аргументы</a>
                         </li>
-                        <li class="nav-item {% if request.endpoint == 'about' %}active{% endif %}">
-                            <a class="nav-link" href="{{ url_for('about') }}">Об авторе</a>
+                        <li class="nav-item {% if request.endpoint == 'headers' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('headers') }}">Запросы</a>
                         </li>
+                        <li class="nav-item {% if request.endpoint == 'cookies' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('cookies') }}">Cookies</a>
+                        </li>
+                        <li class="nav-item {% if request.endpoint == 'form' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('form') }}">Форма</a>
+                        </li>
+                        <li class="nav-item {% if request.endpoint == 'calc' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('calc') }}">Калькулятор</a>
+                        </li>
+                        <li class="nav-item {% if request.endpoint == 'phonecheck' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('phonecheck') }}">Проверка телефона</a>
+                        </li>                        
                     </ul>
                 </div>
             </div>

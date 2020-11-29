@@ -1,54 +1,84 @@
-from random import randint
-from flask import Flask, render_template, url_for
-from faker import Faker
-
-fake = Faker()
+from flask import Flask, render_template, request, make_response
+import operator as op
 
 app = Flask(__name__)
 application = app
 
-images_ids = ['6e12f3de-d5fd-4ebb-855b-8cbc485278b7',
-              '2d2ab7df-cdbc-48a8-a936-35bba702def5',
-              '7d4e9175-95ea-4c5f-8be5-92a6b708bb3c',
-              'afc2cfe7-5cac-4b80-9b9a-d5c65ef0c728',
-              'cab5b7f2-774e-4884-a200-0c0180fa777f']
-
-def generate_comments(replies=True):
-    comments = []
-    for i in range(randint(1, 3)):
-        comment = { 'author': fake.name(), 'text': fake.text() }
-        if replies:
-            comment['replies'] = generate_comments(replies=False)
-        comments.append(comment)
-    return comments
-
-def generate_post(i):
-    return {
-        'title': 'Заголовок поста',
-        'text': fake.paragraph(nb_sentences=100),
-        'author': fake.name(),
-        'date': fake.date_time_between(start_date='-2y', end_date='now'),
-        'image_filename': f'{images_ids[i]}.jpg',
-        'comments': generate_comments()
-    }
-
-posts_list = sorted([generate_post(i) for i in range(5)], key=lambda p: p['date'], reverse=True)
-
+app.secret_key = 'some_secret'
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/posts')
-def posts():
-    title = 'Последние посты'
-    return render_template('posts.html', title=title, posts=posts_list)
+@app.route('/args')
+def args():
+    return render_template('args.html')
 
-@app.route('/posts/<int:index>')
-def post(index):
-    p = posts_list[index]
-    return render_template('post.html', title=p['title'], post=p)
+@app.route('/headers')
+def headers():
+    return render_template('headers.html')
 
-@app.route('/about')
-def about():
-    title = 'Об авторе'
-    return render_template('about.html', title=title)
+
+@app.route('/cookies')
+def cookies():
+    resp=make_response(render_template('cookies.html'))
+    if 'username' in request.cookies:
+        resp.set_cookie('username', 'Vlad', expires=0)
+    else:
+        resp.set_cookie('username', 'Vlad')
+
+    return resp
+
+@app.route('/form', methods=['GET', 'POST'])
+def form():
+    return render_template('form.html')
+
+@app.route('/calc')
+def calc():
+    try:
+        result = None
+        error_msg = None
+        operations = ['+','-','*','/']
+        operations_functions = { '+' : op.add, '-': op.sub, '*': op.mul, '/': op.truediv }
+        if request.args.get('operand1'):
+            op1 = float(request.args.get('operand1'))
+        if request.args.get('operand2'):
+            op2 = float(request.args.get('operand2'))
+        x = operations_functions[request.args.get('operation')]
+        result = x(op1, op2)
+    except ValueError:
+        error_msg = 'Введено не число'
+    except ZeroDivisionError:
+        error_msg = 'Деление на ноль запрещено'
+    except KeyError:
+        error_msg = 'Операция невозможна'
+    return render_template('calc.html',operations=operations, result=result, error_msg=error_msg)
+
+
+@app.route('/phonecheck', methods=['GET','POST'])
+def phonecheck():
+    digits=None
+    numbers=None
+    msg=[]
+    if request.method == 'POST':
+        result = request.form['phone']
+        result = result.replace(')','').replace('.','').replace('(','').replace(' ','').replace('-','').replace('.','').replace('+','')
+        digits=True
+        for el in list(result):
+            if not el.isdigit():
+                digits=False
+                msg.append('Недопустимый ввод. В номере телефона встречаются недопустимые символы')
+                break
+        if (result.startswith('7') or result.startswith('8')) and len(result)==11:
+            numbers=True
+        elif len(result)==10:
+            result= "8"+result
+            numbers=True
+        else:
+            numbers=False
+            msg.append('Недопустимый ввод. Неверное количество цифр.')
+        
+    else:
+        result = None
+    if digits and numbers:
+       result = f"{result[0]}-{result[1:4]}-{result[4:7]}-{result[7:9]}-{result[9:11]}"
+    return render_template('phonecheck.html', result=result, numbers=numbers,digits=digits,msg=msg)
