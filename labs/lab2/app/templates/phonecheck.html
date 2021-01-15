@@ -4,7 +4,7 @@
     <form method='POST'>
         <div class="form-row">
           <div class="col-md-4 mb-3">
-            <label for="phone">Номер телефона</label>
+            <label for="phone">Номера телефона</label>
             <input type="text" id='phone' name='phone' class='form-control {%if digits and numbers %} is-valid {% else %} is-invalid {% endif %}' value="{{ request.form.get('phone', '')}}" required>
             <div class="valid-feedback">
               Корректный номер

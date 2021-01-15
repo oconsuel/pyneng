@@ -66,7 +66,7 @@ def phonecheck():
         for el in list(result):
             if not el.isdigit():
                 digits=False
-                msg.append('Недопустимый ввод. В номере телефона встречаются недопустимые символы')
+                msg.append('Недопустимый вводы. В номере телефона встречаются недопустимые символы')
                 break
         if (result.startswith('7') or result.startswith('8')) and len(result)==11:
             numbers=True
